@@ -1,0 +1,9 @@
+
+appId: com.persiststorage
+---
+- clearState 
+- launchApp
+- repeat:
+    times: 10
+    commands:
+      - tapOn: "Save data"
