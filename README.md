@@ -1,79 +1,78 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Experiment: Evaluating Redux Persist with Different Storage Engines in React Native
 
-# Getting Started
+## Objective
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+This experiment examines the impact of different storage engines and persistence strategies on performance in React Native applications. The goal is to highlight the inefficiencies of the default `redux-persist` approach and suggest improvements for optimizing offline-first development practices.
 
-## Step 1: Start the Metro Server
+## Background
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+Offline-first development in React Native typically involves using `redux-persist` with a storage engine such as `AsyncStorage` to persist application state. However, this approach may lead to performance bottlenecks due to the frequency of writes, especially for large stores.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+This experiment compares three configurations:
 
-```bash
-# using npm
-npm start
+1. `redux-persist` with `AsyncStorage`
+2. `redux-persist` with `react-native-mmkv`
+3. A custom hook-based persistence mechanism without `redux-persist`
 
-# OR using Yarn
-yarn start
-```
+## Experiment Setup
 
-## Step 2: Start your Application
+### Branches and Configurations
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+#### 1. **Branch: `asyncstorage-redux-persist`**
+- **Description**: Uses `redux-persist` with `AsyncStorage` as the storage engine.
+- **Performance Report**: Includes a Flashlight report detailing:
+  - The frequency of storage writes.
+  - The impact of storage operations on application responsiveness.
+  - Latency for retrieving persisted data.
 
-### For Android
+---
 
-```bash
-# using npm
-npm run android
+#### 2. **Branch: `mmkv-redux-persist`**
+- **Description**: Uses `redux-persist` with `react-native-mmkv` as the storage engine.
+- **Performance Report**: Includes a Flashlight report highlighting:
+  - Improved read/write speeds compared to `AsyncStorage`.
+  - Reduced overhead on state persistence.
+  - Better performance under load or with a large Redux store.
 
-# OR using Yarn
-yarn android
-```
+---
 
-### For iOS
+#### 3. **Branch: `no-redux-persist`**
+- **Description**: A custom persistence mechanism that does not use `redux-persist`. Instead, state persistence is triggered when the app transitions to an inactive state, leveraging a custom hook.
+- **Performance Report**: Details:
+  - Minimal performance overhead during active application use.
+  - A significant reduction in the frequency of write operations.
+  - Linear scaling of operations based on app transitions, as opposed to constant state writes.
 
-```bash
-# using npm
-npm run ios
+---
 
-# OR using Yarn
-yarn ios
-```
+## Key Findings
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+1. **Performance Bottlenecks of `redux-persist` with `AsyncStorage`**:
+   - Frequent write operations degrade application responsiveness.
+   - Linear growth in storage operations as the Redux store scales.
+   - Significant delays in state retrieval after app restarts.
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+2. **Advantages of `react-native-mmkv`**:
+   - Drastically improved performance compared to `AsyncStorage`.
+   - Near-instant read and write operations.
+   - Better scalability for large Redux stores.
 
-## Step 3: Modifying your App
+3. **Efficiency of Custom Hook-Based Persistence**:
+   - Persistence triggered only during app state transitions minimizes active write operations.
+   - Maintains a linear growth of operations but avoids constant writes during runtime.
+   - Ideal for scenarios requiring efficient state management and minimal runtime overhead.
 
-Now that you have successfully run the app, let's modify it.
+---
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+## Conclusion
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+### Observations:
+- The default `redux-persist` approach is inefficient for offline-first React Native applications due to constant state writes.
+- Introducing `react-native-mmkv` improves performance but does not address the fundamental issue of frequent write operations.
+- A custom persistence strategy, such as batching writes during app state transitions, offers significant efficiency gains.
 
-## Congratulations! :tada:
+### Recommendations:
+- **Short-term**: Switch to `react-native-mmkv` for better performance without major code changes.
+- **Long-term**: Replace constant writes with a throttled or app-state-triggered persistence mechanism to reduce overhead.
 
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+By revisiting persistence strategies, React Native developers can achieve smoother performance while maintaining offline-first functionality.
