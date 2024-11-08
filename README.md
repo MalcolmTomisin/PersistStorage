@@ -21,18 +21,17 @@ This experiment compares three configurations:
 #### 1. **Branch: `asyncstorage-redux-persist`**
 - **Description**: Uses `redux-persist` with `AsyncStorage` as the storage engine.
 - **Performance Report**: Includes a Flashlight report detailing:
-  - The frequency of storage writes.
-  - The impact of storage operations on application responsiveness.
-  - Latency for retrieving persisted data.
+  - The impact on FPS.
+  - The impact of storage operations on CPU usage.
+
+
+![Redux Persist and Asyncstorage report](./persist-asyncstorage-report.png)
 
 ---
 
 #### 2. **Branch: `mmkv-redux-persist`**
 - **Description**: Uses `redux-persist` with `react-native-mmkv` as the storage engine.
-- **Performance Report**: Includes a Flashlight report highlighting:
-  - Improved read/write speeds compared to `AsyncStorage`.
-  - Reduced overhead on state persistence.
-  - Better performance under load or with a large Redux store.
+
 
 ---
 
