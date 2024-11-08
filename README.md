@@ -32,15 +32,12 @@ This experiment compares three configurations:
 #### 2. **Branch: `mmkv-redux-persist`**
 - **Description**: Uses `redux-persist` with `react-native-mmkv` as the storage engine.
 
-
+![Redux Persist and MMKV report](./mmkv-persist-report.png)
 ---
 
 #### 3. **Branch: `no-redux-persist`**
 - **Description**: A custom persistence mechanism that does not use `redux-persist`. Instead, state persistence is triggered when the app transitions to an inactive state, leveraging a custom hook.
-- **Performance Report**: Details:
-  - Minimal performance overhead during active application use.
-  - A significant reduction in the frequency of write operations.
-  - Linear scaling of operations based on app transitions, as opposed to constant state writes.
+
 
 ---
 
