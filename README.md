@@ -38,6 +38,7 @@ This experiment compares three configurations:
 #### 3. **Branch: `no-redux-persist`**
 - **Description**: A custom persistence mechanism that does not use `redux-persist`. Instead, state persistence is triggered when the app transitions to an inactive state, leveraging a custom hook.
 
+![No Redux Persist and MMKV report](./no-persist-report.png)
 
 ---
 
@@ -46,16 +47,15 @@ This experiment compares three configurations:
 1. **Performance Bottlenecks of `redux-persist` with `AsyncStorage`**:
    - Frequent write operations degrade application responsiveness.
    - Linear growth in storage operations as the Redux store scales.
-   - Significant delays in state retrieval after app restarts.
+   - Linear growth in compute with dispatch
 
-2. **Advantages of `react-native-mmkv`**:
+2. **Findings from using `redux persist` with `react-native-mmkv`**:
    - Drastically improved performance compared to `AsyncStorage`.
-   - Near-instant read and write operations.
-   - Better scalability for large Redux stores.
+   - Similar compute resource use with AsyncStorage and Redux persist combo
 
 3. **Efficiency of Custom Hook-Based Persistence**:
    - Persistence triggered only during app state transitions minimizes active write operations.
-   - Maintains a linear growth of operations but avoids constant writes during runtime.
+   - Maintains a constant growth of operations, avoids constant writes during runtime.
    - Ideal for scenarios requiring efficient state management and minimal runtime overhead.
 
 ---
