@@ -47,15 +47,14 @@ This experiment compares three configurations:
 1. **Performance Bottlenecks of `redux-persist` with `AsyncStorage`**:
    - Frequent write operations degrade application responsiveness.
    - Linear growth in storage operations as the Redux store scales.
-   - Linear growth in compute with dispatch
 
 2. **Findings from using `redux persist` with `react-native-mmkv`**:
-   - Drastically improved performance compared to `AsyncStorage`.
+   - Improved performance compared to `AsyncStorage`.
    - Similar compute resource use with AsyncStorage and Redux persist combo
 
 3. **Efficiency of Custom Hook-Based Persistence**:
-   - Persistence triggered only during app state transitions minimizes active write operations.
-   - Maintains a constant growth of operations, avoids constant writes during runtime.
+   - Persistence triggered only during app state transitions, minimizes active write operations.
+   - Constant growth of operation `O(1)` in an active session, avoids constant writes during runtime.
    - Ideal for scenarios requiring efficient state management and minimal runtime overhead.
 
 ---
